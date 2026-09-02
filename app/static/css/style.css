@@ -1329,3 +1329,76 @@ button:hover {
 .notification-popup-footer a:hover {
     text-decoration: underline;
 }
+
+/* ========================================
+   プロフィール変更
+======================================== */
+
+.profile-change-section {
+    width: 100%;
+    max-width: 700px;
+
+    margin-top: 30px;
+    padding: 25px;
+
+    background-color: #ffffff;
+
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+.profile-change-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+
+    font-size: 18px;
+}
+
+
+.profile-form-group {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 18px;
+}
+
+
+.profile-form-group label {
+    margin-bottom: 7px;
+
+    font-weight: bold;
+}
+
+
+.profile-form-group input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 10px 12px;
+
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+
+    font-size: 14px;
+}
+
+
+.profile-change-button {
+    width: auto !important;
+
+    padding: 10px 18px !important;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: #466fbd;
+    color: #ffffff;
+
+    cursor: pointer;
+}
+
+
+.profile-change-button:hover {
+    opacity: 0.85;
+}

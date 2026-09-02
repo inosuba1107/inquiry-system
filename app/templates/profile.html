@@ -103,23 +103,120 @@
 
             <h2>プロフィール情報</h2>
 
-            <!-- 縦型のテーブル構造（左：項目名 / 右：データ） -->
             <table class="table_design02">
                 <tbody>
                     <tr>
                         <th>氏名</th>
                         <td>{{ name }}</td>
                     </tr>
+
                     <tr>
                         <th>ユーザーID</th>
                         <td>{{ username }}</td>
                     </tr>
+
                     <tr>
                         <th>パスワード</th>
                         <td>••••••••（セキュリティのため非表示）</td>
                     </tr>
                 </tbody>
             </table>
+
+
+            <!-- ユーザーID変更 -->
+            <div class="profile-change-section">
+
+                <h3>ユーザーID変更</h3>
+
+                <form action="/profile/username" method="post">
+
+                    <div class="profile-form-group">
+
+                        <label for="new_username">
+                            新しいユーザーID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="new_username"
+                            name="new_username"
+                            value="{{ username }}"
+                            required
+                        >
+
+                    </div>
+
+                    <button type="submit" class="profile-change-button">
+                        ユーザーIDを変更
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- パスワード変更 -->
+            <div class="profile-change-section">
+
+                <h3>パスワード変更</h3>
+
+                <form action="/profile/password" method="post">
+
+                    <div class="profile-form-group">
+
+                        <label for="current_password">
+                            現在のパスワード
+                        </label>
+
+                        <input
+                            type="password"
+                            id="current_password"
+                            name="current_password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="profile-form-group">
+
+                        <label for="new_password">
+                            新しいパスワード
+                        </label>
+
+                        <input
+                            type="password"
+                            id="new_password"
+                            name="new_password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="profile-form-group">
+
+                        <label for="confirm_password">
+                            新しいパスワード（確認）
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button type="submit" class="profile-change-button">
+                        パスワードを変更
+                    </button>
+
+                </form>
+
+            </div>
 
         </main>
 

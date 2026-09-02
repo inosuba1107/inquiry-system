@@ -11,6 +11,7 @@ from .database import engine, Base, SessionLocal
 from . import models
 from .auth import hash_password, verify_password
 
+import re
 
 Base.metadata.create_all(bind=engine)
 
@@ -433,6 +434,154 @@ def get_profile(request: Request, db: Session = Depends(get_db)):
             "unread_count": unread_count,
             "notifications": notifications
         }
+    )
+
+@app.post("/profile/username")
+def update_username(
+    request: Request,
+    new_username: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    # ログインユーザー取得
+    username = request.session.get("username")
+
+    if not username:
+        return RedirectResponse(
+            url="/login",
+            status_code=status.HTTP_303_SEE_OTHER
+        )
+
+    # 前後の空白を削除
+    new_username = new_username.strip()
+
+    # -------------------------
+    # ID形式チェック
+    # -------------------------
+
+    if len(new_username) < 3 or len(new_username) > 50:
+        return templates.TemplateResponse(
+            request=request,
+            name="error.html",
+            context={
+                "message": "ユーザーIDは3～50文字で入力してください"
+            }
+        )
+
+    if not re.fullmatch(r"[A-Za-z0-9_]+", new_username):
+        return templates.TemplateResponse(
+            request=request,
+            name="error.html",
+            context={
+                "message": "ユーザーIDは英数字と「_」のみ使用できます"
+            }
+        )
+
+    # 現在のユーザー取得
+    user = db.query(models.User).filter(
+        models.User.username == username
+    ).first()
+
+    if not user:
+        return RedirectResponse(
+            url="/login",
+            status_code=status.HTTP_303_SEE_OTHER
+        )
+
+    # 同じIDなら何もしない
+    if new_username == username:
+        return RedirectResponse(
+            url="/profile",
+            status_code=status.HTTP_303_SEE_OTHER
+        )
+
+    # -------------------------
+    # 重複チェック
+    # -------------------------
+
+    existing_user = db.query(models.User).filter(
+        models.User.username == new_username
+    ).first()
+
+    if existing_user:
+        return templates.TemplateResponse(
+            request=request,
+            name="error.html",
+            context={
+                "message": "そのユーザーIDはすでに使用されています"
+            }
+        )
+
+    # -------------------------
+    # ID変更
+    # -------------------------
+
+    user.username = new_username
+
+    db.commit()
+
+    # セッション更新
+    request.session["username"] = new_username
+
+    return RedirectResponse(
+        url="/profile",
+        status_code=status.HTTP_303_SEE_OTHER
+    )
+
+@app.post("/profile/password")
+def update_password(
+    request: Request,
+    current_password: str = Form(...),
+    new_password: str = Form(...),
+    confirm_password: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    username = request.session.get("username")
+
+    if not username:
+        return RedirectResponse(
+            url="/login",
+            status_code=303
+        )
+
+    # ユーザー取得
+    user = db.query(models.User).filter(
+        models.User.username == username
+    ).first()
+
+    if not user:
+        return RedirectResponse(
+            url="/login",
+            status_code=303
+        )
+
+    # 現在のパスワード確認
+    if not verify_password(current_password, user.password):
+        return templates.TemplateResponse(
+            request=request,
+            name="error.html",
+            context={
+                "message": "現在のパスワードが正しくありません"
+            }
+        )
+
+    # 新しいパスワード確認
+    if new_password != confirm_password:
+        return templates.TemplateResponse(
+            request=request,
+            name="error.html",
+            context={
+                "message": "新しいパスワードが一致していません"
+            }
+        )
+
+    # 新しいパスワードをハッシュ化
+    user.password = hash_password(new_password)
+
+    db.commit()
+
+    return RedirectResponse(
+        url="/profile",
+        status_code=303
     )
 
 @app.get("/inquiry/{inquiry_id}")

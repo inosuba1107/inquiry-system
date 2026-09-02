@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>エラー - 社内問い合わせ管理システム</title>
+
+    <link rel="stylesheet" href="/static/css/style.css?v=2">
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="system-title">
+        社内問い合わせ管理システム
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <nav>
+            <a href="/home">・ホーム</a>
+            <a href="/inquiry/register">・問い合わせ登録</a>
+            <a href="/inquiry/history">・問い合わせ履歴</a>
+            <a href="/profile">・プロフィール</a>
+        </nav>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <div class="error-container">
+
+            <h2>エラー</h2>
+
+            <p>
+                {{ message }}
+            </p>
+
+            <a href="/profile" class="back-button">
+                プロフィールに戻る
+            </a>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

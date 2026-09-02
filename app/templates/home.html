@@ -106,26 +106,48 @@
 
             <!-- 件数カード -->
             <section class="summary-cards">
+                
+                {% if role == "staff" %}
+                    <div class="admin-summary-card">
 
-                <div class="summary-card">
-                    <p>未対応</p>
-                    <div class="number">12 <span>件</span></div>
-                </div>
+                        <p>未対応件数</p>
 
-                <div class="summary-card">
-                    <p>対応中</p>
-                    <div class="number">8 <span>件</span></div>
-                </div>
+                        <div class="admin-number">
+                            {{ pending_count }} <span>件</span>
+                        </div>
 
-                <div class="summary-card">
-                    <p>対応済</p>
-                    <div class="number">45 <span>件</span></div>
-                </div>
+                    </div>
 
-                <div class="summary-card">
-                    <p>合計</p>
-                    <div class="number">65 <span>件</span></div>
-                </div>
+                    <div class="admin-summary-card">
+
+                        <p>対応中件数</p>
+
+                        <div class="admin-number">
+                            {{ in_progress_count }} <span>件</span>
+                        </div>
+
+                    </div>
+                    
+                    <div class="admin-summary-card">
+
+                        <p>対応済件数</p>
+
+                        <div class="admin-number">
+                            {{ completed_count }} <span>件</span>
+                        </div>
+
+                    </div>  
+                    
+                    <div class="admin-summary-card">
+
+                        <p>合計件数</p>
+
+                        <div class="admin-number">
+                            {{ count_all }} <span>件</span>
+                        </div>
+
+                    </div> 
+                {% endif %}
 
             </section>
 

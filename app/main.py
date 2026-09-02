@@ -117,6 +117,27 @@ def home_page(request: Request, db: Session = Depends(get_db)):
             status_code=status.HTTP_303_SEE_OTHER
         )
 
+
+    #未対応件数
+    pending_count = db.query(models.Inquiry).filter(
+        models.Inquiry.status == "未対応",
+        models.Inquiry.category == user.staff_category
+    ).count()
+
+    #対応中件数
+    in_progress_count = db.query(models.Inquiry).filter(
+        models.Inquiry.status == "対応中",
+        models.Inquiry.category == user.staff_category
+    ).count()
+
+    #対応済件数
+    completed_count = db.query(models.Inquiry).filter(
+        models.Inquiry.status == "対応済",
+        models.Inquiry.category == user.staff_category
+    ).count()
+
+    count_all = pending_count + in_progress_count + completed_count
+
     # 未読通知件数
     unread_count = db.query(
         models.Notification
@@ -141,6 +162,11 @@ def home_page(request: Request, db: Session = Depends(get_db)):
             "user_name": user.username,
             "name": getattr(user, "name", user.username),
             "username": user.username,
+            "role": user.role,
+            "pending_count": pending_count,
+            "in_progress_count": in_progress_count,
+            "completed_count": completed_count,
+            "count_all": count_all,
             "unread_count": unread_count,
             "notifications": notifications
         }

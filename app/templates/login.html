@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>ログイン</title>
+        <link rel="stylesheet" href="/static/css/style.css?v=1">
+    </head>
+    <body>
+        <h1>問い合わせ管理システム</h1>
+
+        <h2>ログイン</h2>
+
+        <form action="/login" method="post">
+            <div>
+                <label>メールアドレス</label>
+                <input type="text" name="username" placeholder="shohei.ohtani@toiawase.co.jp" required>
+            </div>
+
+            <div>
+                <label>パスワード</label>
+                <input type="password" name="password" placeholder="4字以上8字以下" required>
+            </div>
+
+            <button type="submit">ログイン</button>
+        </form>
+        <p>
+            <a href="/register">新規登録はこちら</a>
+        </p>
+    </body>
+</html>

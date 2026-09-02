@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ホーム - 問い合わせ登録</title>
+
+    <link rel="stylesheet" href="/static/css/style.css?v=1">
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="system-title">
+            社内問い合わせ管理システム
+        </div>
+
+        <div class="header-right">
+            <div class="notification-wrapper">
+
+                <button type="button"
+                        class="notification"
+                        id="notification-button">
+                    🔔
+
+                    {% if unread_count > 0 %}
+                        <span class="notification-count">
+                            {{ unread_count }}
+                        </span>
+                    {% endif %}
+                </button>
+
+                <div class="notification-popup" id="notification-popup">
+
+                    <div class="notification-popup-header">
+                        <span>通知</span>
+                    </div>
+
+                    <div class="notification-popup-body">
+
+                        {% for notification in notifications %}
+
+                        <a href="/notifications/{{ notification.id }}"
+                        class="notification-popup-item">
+
+                            <div class="notification-popup-message">
+                                {{ notification.message }}
+                            </div>
+
+                            <div class="notification-popup-date">
+                                {{ notification.created_at.strftime('%Y/%m/%d') }}
+                            </div>
+
+                        </a>
+
+                        {% else %}
+
+                        <div class="notification-popup-empty">
+                            通知はありません。
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="notification-popup-footer">
+                        <a href="/notifications">
+                            すべて見る
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- ログインユーザー名を表示 -->
+            <span>{{ name }}</span>
+        </div>
+    </header>
+
+
+    <!-- 全体 -->
+    <div class="layout">
+
+        <!-- サイドバー -->
+        <aside class="sidebar">
+
+            <nav>
+                <a href="/home">・ホーム</a>
+                <a href="/inquiry/register">・問い合わせ登録</a>
+                <a href="/inquiry/history">・問い合わせ履歴</a>
+                <a href="/profile">・プロフィール</a>
+            </nav>
+
+            <form action="/logout" method="post" class="logout-form">
+                <button type="submit">・ログアウト</button>
+            </form>
+
+        </aside>
+
+
+        <!-- メイン -->
+        <main class="success-main-content">
+            <div class="success-card">
+                <!-- 完了アイコン（緑色のチェックマーク） -->
+                <div class="success-icon">✓</div>
+                
+                <h2>登録が完了しました</h2>
+                <p class="success-message">お問い合わせを受け付けました。<br>内容を確認のうえ、担当者よりご連絡いたします。</p>
+                
+                <!-- ボタン風のリンク -->
+                <div class="card-action">
+                    <a href="/home" class="btn-primary">ホームへ戻る</a>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        const notificationButton =
+            document.getElementById("notification-button");
+
+        const notificationPopup =
+            document.getElementById("notification-popup");
+
+        notificationButton.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+            notificationPopup.classList.toggle("show");
+
+        });
+
+        document.addEventListener("click", function (event) {
+
+            if (!notificationPopup.contains(event.target) &&
+                !notificationButton.contains(event.target)) {
+
+                notificationPopup.classList.remove("show");
+
+            }
+
+        });
+    </script>
+
+</body>
+</html>

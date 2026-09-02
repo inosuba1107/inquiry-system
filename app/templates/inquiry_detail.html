@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>問い合わせ詳細</title>
+
+    <link rel="stylesheet" href="/static/css/style.css?v=1">
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="system-title">
+            社内問い合わせ管理システム
+        </div>
+
+        <div class="header-right">
+            <div class="notification-wrapper">
+
+                <button type="button"
+                        class="notification"
+                        id="notification-button">
+                    🔔
+
+                    {% if unread_count > 0 %}
+                        <span class="notification-count">
+                            {{ unread_count }}
+                        </span>
+                    {% endif %}
+                </button>
+
+                <div class="notification-popup" id="notification-popup">
+
+                    <div class="notification-popup-header">
+                        <span>通知</span>
+                    </div>
+
+                    <div class="notification-popup-body">
+
+                        {% for notification in notifications %}
+
+                        <a href="/notifications/{{ notification.id }}"
+                        class="notification-popup-item">
+
+                            <div class="notification-popup-message">
+                                {{ notification.message }}
+                            </div>
+
+                            <div class="notification-popup-date">
+                                {{ notification.created_at.strftime('%Y/%m/%d') }}
+                            </div>
+
+                        </a>
+
+                        {% else %}
+
+                        <div class="notification-popup-empty">
+                            通知はありません。
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="notification-popup-footer">
+                        <a href="/notifications">
+                            すべて見る
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- ログインユーザー名を表示 -->
+            <span>{{ name }}</span>
+        </div>
+    </header>
+
+
+    <!-- 全体 -->
+    <div class="layout">
+
+        <!-- サイドバー -->
+        <aside class="sidebar">
+
+            <nav>
+                <a href="/home">・ホーム</a>
+                <a href="/inquiry/register">・問い合わせ登録</a>
+                <a href="/inquiry/history">・問い合わせ履歴</a>
+                <a href="/profile">・プロフィール</a>
+            </nav>
+
+            <form action="/logout" method="post" class="logout-form">
+                <button type="submit">・ログアウト</button>
+            </form>
+
+        </aside>
+
+
+        <!-- メイン -->
+        <main class="main-content inquiry-detail-page">
+
+            <h2>問い合わせ詳細</h2>
+
+            <div class="inquiry-detail-card">
+
+                <div class="detail-row">
+                    <div class="detail-label">問い合わせID</div>
+                    <div class="detail-value">
+                        {{ inquiry.id }}
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">件名</div>
+                    <div class="detail-value">
+                        {{ inquiry.title }}
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">申請者</div>
+                    <div class="detail-value">
+                        {{ inquiry.username }}
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">カテゴリ</div>
+                    <div class="detail-value">
+                        {{ inquiry.category }}
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">ステータス</div>
+                    <div class="detail-value">
+                        <span class="status-badge status-{{ inquiry.status }}">
+                            {{ inquiry.status }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">優先度</div>
+                    <div class="detail-value">
+                        <span class="priority-badge priority-{{ inquiry.priority }}">
+                            {{ inquiry.priority }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">問い合わせ日時</div>
+                    <div class="detail-value">
+                        {{ inquiry.created_at }}
+                    </div>
+                </div>
+
+                <div class="detail-content">
+                    <div class="detail-label">問い合わせ内容</div>
+
+                    <div class="content-box">
+                        {{ inquiry.content }}
+                    </div>
+                </div>
+                
+                {% if role == "admin" or (role == "staff" and staff_category == inquiry.category) %}
+
+                <div class="response-section">
+
+                    <h3>回答</h3>
+
+                    <form action="/inquiry/{{ inquiry.id }}/response" method="post">
+
+                        <div class="response-form-row">
+
+                            <label for="status">
+                                ステータス
+                            </label>
+
+                            <select name="status" id="status">
+                                <option value="未対応"
+                                    {% if inquiry.status == "未対応" %}selected{% endif %}>
+                                    未対応
+                                </option>
+
+                                <option value="対応中"
+                                    {% if inquiry.status == "対応中" %}selected{% endif %}>
+                                    対応中
+                                </option>
+
+                                <option value="対応済"
+                                    {% if inquiry.status == "対応済" %}selected{% endif %}>
+                                    対応済
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="response-form-content">
+
+                            <label for="response">
+                                対応内容
+                            </label>
+
+                            <textarea
+                                id="response"
+                                name="response"
+                                rows="6"
+                                placeholder="問い合わせに対する回答を入力してください"
+                            >{{ inquiry.response or "" }}</textarea>
+
+                        </div>
+
+
+                        <div class="response-actions">
+
+                            <button type="submit" class="response-button">
+                                回答を登録
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                {% endif %}
+
+                <!-- 担当者からの回答 -->
+                {% if inquiry.response %}
+
+                <div class="detail-content response-display">
+
+                    <div class="detail-label">
+                        担当者からの回答
+                    </div>
+
+                    <div class="content-box response-box">
+                        {{ inquiry.response }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="detail-actions">
+                <a href="/inquiry/history" class="back-button">
+                    履歴に戻る
+                </a>
+            </div>
+
+        </main>
+
+    </div>
+
+    <script>
+        const notificationButton =
+            document.getElementById("notification-button");
+
+        const notificationPopup =
+            document.getElementById("notification-popup");
+
+        notificationButton.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+            notificationPopup.classList.toggle("show");
+
+        });
+
+        document.addEventListener("click", function (event) {
+
+            if (!notificationPopup.contains(event.target) &&
+                !notificationButton.contains(event.target)) {
+
+                notificationPopup.classList.remove("show");
+
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>

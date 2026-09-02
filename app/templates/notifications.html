@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>通知</title>
+
+    <link rel="stylesheet" href="/static/css/style.css?v=1">
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="system-title">
+        社内問い合わせ管理システム
+    </div>
+
+    <div class="header-right">
+        <span>通知</span>
+        <span>{{ name }}</span>
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <nav>
+            <a href="/home">・ホーム</a>
+            <a href="/inquiry/register">・問い合わせ登録</a>
+            <a href="/inquiry/history">・問い合わせ履歴</a>
+            <a href="/notifications">・通知</a>
+            <a href="/profile">・プロフィール</a>
+        </nav>
+
+        <form action="/logout" method="post" class="logout-form">
+            <button type="submit">・ログアウト</button>
+        </form>
+
+    </aside>
+
+
+    <main class="main-content notifications-page">
+
+        <h2>通知</h2>
+
+        <div class="notification-list">
+
+            {% for notification in notifications %}
+
+            <a
+                href="/inquiry/{{ notification.inquiry_id }}"
+                class="notification-item"
+            >
+
+                <div class="notification-message">
+                    {{ notification.message }}
+                </div>
+
+                <div class="notification-date">
+                    {{ notification.created_at.strftime('%Y/%m/%d') }}
+                </div>
+
+            </a>
+
+            {% else %}
+
+            <div class="notification-empty">
+                通知はありません。
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

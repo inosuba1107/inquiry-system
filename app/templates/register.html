@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta chatset="UTF-8">
+        <title>新規登録</title>
+        <link rel="stylesheet" href="/static/css/style.css?v=1">
+    </head>
+    <body>
+        <h1>問い合わせ管理システム</h1>
+
+        <h2>新規登録</h2>
+
+        <form action="/register" method="post">
+            <div>
+                <label>名前</label>
+                <input type="text" name="name" placeholder="大谷翔平" required>
+            </div>
+
+            <div>
+                <label>メールアドレス</label>
+                <input type="text" name="username" placeholder="shohei.ohtani@toiawase.co.jp" required>
+            </div>
+
+            <div>
+                <label>パスワード</label>
+                <input type="password" name="password" placeholder="4字以上8字以下" required>
+            </div>
+
+            <button type="submit">登録</button>
+        </form>
+
+        <p>
+            <a href="/">ログイン画面へ戻る</a>
+        </p>
+    </body>
+</html>

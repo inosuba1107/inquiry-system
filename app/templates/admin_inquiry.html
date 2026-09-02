@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>管理者ホーム - 社内問い合わせ管理システム</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header class="header">
+
+        <div class="system-title">
+            社内問い合わせ管理システム
+        </div>
+
+        <div class="header-right">
+            <span>管理者用</span>
+        </div>
+
+    </header>
+
+
+    <!-- 全体レイアウト -->
+    <div class="layout">
+
+        <!-- サイドバー -->
+        <aside class="sidebar">
+
+            <nav>
+                <a href="/admin/home">・ホーム</a>
+                <a href="/admin/inquiry">・問い合わせ一覧</a>
+                <a href="/admin/staff">・担当者変更</a>
+            </nav>
+
+            <form action="/logout" method="post" class="logout-form">
+                <button type="submit">・ログアウト</button>
+            </form>
+
+        </aside>
+
+
+        <!-- メインコンテンツ -->
+        <!-- メイン -->
+        <main class="main-content history-page">
+
+            <h2>問い合わせ履歴（管理者用）</h2>
+
+            {% if role == "staff" %}
+
+            <div class="history-switch">
+
+                <a href="/inquiry/history?mode=my"
+                class="{% if mode == 'my' %}active{% endif %}">
+                    自分の問い合わせ
+                </a>
+
+                <a href="/inquiry/history?mode=assigned"
+                class="{% if mode == 'assigned' %}active{% endif %}">
+                    担当の問い合わせ
+                </a>
+
+            </div>
+
+            {% endif %}
+
+            <table class="table_design02">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>件名</th>
+                        <th>カテゴリ</th>
+                        <th>ステータス</th>
+                        <th>優先度</th>
+                        <th>日時</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- バックエンドから渡された inquiries（リスト）をループ処理 -->
+                    {% for inquiry in inquiries %}
+                    <tr>
+                        <td>{{ inquiry.id }}</td>
+                        <td>{{ inquiry.title }}</td>
+                        <td>{{ inquiry.category }}</td>
+                        <td>
+                            <span class="status-badge status-{{ inquiry.status }}">
+                                {{ inquiry.status }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="priority-badge priority-{{ inquiry.priority }}">
+                                {{ inquiry.priority }}
+                            </span>
+                        </td>
+                        <!-- 日時データのフォーマットはバックエンド側で文字列にしておくとスムーズです -->
+                        <td>{{ inquiry.created_at.strftime('%Y/%m/%d') }}</td>
+                        <td>
+                            <a href="/admin/inquiry/{{ inquiry.id }}" class="detail-button">
+                                詳細
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <!-- 万が一データが1件もない場合の表示 -->
+                    <tr>
+                        <td colspan="6" style="text-align: center;">問い合わせ履歴はありません。</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </main>
+
+
+    </div>
+
+</body>
+
+</html>

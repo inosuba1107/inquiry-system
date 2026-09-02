@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>問い合わせ編集</title>
+
+    <link rel="stylesheet" href="/static/css/style.css?v=1">
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="system-title">
+        社内問い合わせ管理システム
+    </div>
+
+    <div class="header-right">
+        <span>管理者用</span>
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <nav>
+            <a href="/admin/home">・ホーム</a>
+            <a href="/admin/inquiry">・問い合わせ一覧</a>
+            <a href="/admin/staff">・担当者変更</a>
+        </nav>
+
+        <form action="/logout" method="post" class="logout-form">
+            <button type="submit">・ログアウト</button>
+        </form>
+
+    </aside>
+
+
+    <main class="main-content inquiry-edit-page">
+
+        <h2>問い合わせ編集</h2>
+
+        <div class="inquiry-edit-card">
+
+            <form action="/admin/inquiry/{{ inquiry.id }}/edit"
+                  method="post">
+
+                <div class="edit-item">
+                    <label for="title">件名</label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value="{{ inquiry.title }}"
+                        required
+                    >
+                </div>
+
+
+                <div class="edit-item">
+                    <label for="category">カテゴリ</label>
+
+                    <select id="category"
+                            name="category"
+                            required>
+
+                        <option value="PC・端末"
+                            {% if inquiry.category == "PC・端末" %}selected{% endif %}>
+                            PC・端末
+                        </option>
+
+                        <option value="ネットワーク"
+                            {% if inquiry.category == "ネットワーク" %}selected{% endif %}>
+                            ネットワーク
+                        </option>
+
+                        <option value="アカウント"
+                            {% if inquiry.category == "アカウント" %}selected{% endif %}>
+                            アカウント
+                        </option>
+
+                        <option value="ソフトウェア"
+                            {% if inquiry.category == "ソフトウェア" %}selected{% endif %}>
+                            ソフトウェア
+                        </option>
+
+                        <option value="その他"
+                            {% if inquiry.category == "その他" %}selected{% endif %}>
+                            その他
+                        </option>
+
+                    </select>
+                </div>
+
+
+                <div class="edit-item">
+                    <label for="priority">優先度</label>
+
+                    <select id="priority"
+                            name="priority"
+                            required>
+
+                        <option value="高"
+                            {% if inquiry.priority == "高" %}selected{% endif %}>
+                            高
+                        </option>
+
+                        <option value="中"
+                            {% if inquiry.priority == "中" %}selected{% endif %}>
+                            中
+                        </option>
+
+                        <option value="低"
+                            {% if inquiry.priority == "低" %}selected{% endif %}>
+                            低
+                        </option>
+
+                    </select>
+                </div>
+
+
+                <div class="edit-item">
+                    <label for="status">ステータス</label>
+
+                    <select id="status"
+                            name="status"
+                            required>
+
+                        <option value="未対応"
+                            {% if inquiry.status == "未対応" %}selected{% endif %}>
+                            未対応
+                        </option>
+
+                        <option value="対応中"
+                            {% if inquiry.status == "対応中" %}selected{% endif %}>
+                            対応中
+                        </option>
+
+                        <option value="対応済"
+                            {% if inquiry.status == "対応済" %}selected{% endif %}>
+                            対応済
+                        </option>
+
+                    </select>
+                </div>
+
+
+                <div class="edit-item">
+                    <label for="content">問い合わせ内容</label>
+
+                    <textarea
+                        id="content"
+                        name="content"
+                        rows="8"
+                        required
+                    >{{ inquiry.content }}</textarea>
+                </div>
+
+
+                <div class="edit-actions">
+
+                    <a href="/admin/inquiry/{{ inquiry.id }}"
+                       class="back-button">
+                        キャンセル
+                    </a>
+
+                    <button type="submit"
+                            class="edit-save-button">
+                        保存
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

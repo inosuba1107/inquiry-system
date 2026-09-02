@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>担当者変更 - 社内問い合わせ管理システム</title>
+
+    <link rel="stylesheet" href="/static/css/style.css?v=1">
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div class="system-title">
+            社内問い合わせ管理システム
+        </div>
+
+        <div class="header-right">
+            <span>管理者用</span>
+        </div>
+
+    </header>
+
+
+    <div class="layout">
+
+        <aside class="sidebar">
+
+            <nav>
+                <a href="/admin/home">・ホーム</a>
+                <a href="/admin/inquiry">・問い合わせ一覧</a>
+                <a href="/admin/staff">・担当者変更</a>
+            </nav>
+
+            <form action="/logout" method="post" class="logout-form">
+                <button type="submit">・ログアウト</button>
+            </form>
+
+        </aside>
+
+
+        <main class="admin-main-content">
+
+            <h2 class="admin-title">
+                担当者変更
+            </h2>
+
+
+            <table class="table_design02">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ユーザー名</th>
+                        <th>氏名</th>
+                        <th>権限</th>
+                        <th>担当カテゴリ</th>
+                        <th>変更</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {% for user in users %}
+
+                    <tr>
+
+                        <td>
+                            {{ user.id }}
+                        </td>
+
+                        <td>
+                            {{ user.username }}
+                        </td>
+
+                        <td>
+                            {{ user.name }}
+                        </td>
+
+                        <td>
+                            {{ user.role }}
+                        </td>
+
+                        <td>
+
+                            <form
+                                action="/admin/staff/{{ user.id }}"
+                                method="post"
+                            >
+
+                                <select name="staff_category">
+
+                                    <option
+                                        value=""
+                                        {% if not user.staff_category %}selected{% endif %}
+                                    >
+                                        権限なし
+                                    </option>
+
+                                    <option
+                                        value="PC・端末"
+                                        {% if user.staff_category == "PC・端末" %}selected{% endif %}
+                                    >
+                                        PC・端末
+                                    </option>
+
+                                    <option
+                                        value="ネットワーク"
+                                        {% if user.staff_category == "ネットワーク" %}selected{% endif %}
+                                    >
+                                        ネットワーク
+                                    </option>
+
+                                    <option
+                                        value="アカウント"
+                                        {% if user.staff_category == "アカウント" %}selected{% endif %}
+                                    >
+                                        アカウント
+                                    </option>
+
+                                    <option
+                                        value="ソフトウェア"
+                                        {% if user.staff_category == "ソフトウェア" %}selected{% endif %}
+                                    >
+                                        ソフトウェア
+                                    </option>
+
+                                    <option
+                                        value="その他"
+                                        {% if user.staff_category == "その他" %}selected{% endif %}
+                                    >
+                                        その他
+                                    </option>
+
+                                </select>
+
+                                <button type="submit">
+                                    変更
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                        <td>
+                            -
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

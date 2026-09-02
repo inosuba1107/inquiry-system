@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>問い合わせ詳細 - 管理者</title>
+
+    <link rel="stylesheet" href="/static/css/style.css?v=1">
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="system-title">
+        社内問い合わせ管理システム
+    </div>
+
+    <div class="header-right">
+        <span>管理者用</span>
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <nav>
+            <a href="/admin/home">・ホーム</a>
+            <a href="/admin/inquiry">・問い合わせ一覧</a>
+            <a href="/admin/staff">・担当者変更</a>
+        </nav>
+
+        <form action="/logout" method="post" class="logout-form">
+            <button type="submit">・ログアウト</button>
+        </form>
+
+    </aside>
+
+
+    <main class="main-content inquiry-detail-page">
+
+        <h2>問い合わせ詳細</h2>
+
+        <div class="inquiry-detail-card">
+
+            <div class="detail-row">
+                <div class="detail-label">問い合わせID</div>
+                <div class="detail-value">
+                    {{ inquiry.id }}
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">件名</div>
+                <div class="detail-value">
+                    {{ inquiry.title }}
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">申請者</div>
+                <div class="detail-value">
+                    {{ inquiry.username }}
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">カテゴリ</div>
+                <div class="detail-value">
+                    {{ inquiry.category }}
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">ステータス</div>
+                <div class="detail-value">
+                    <span class="status-badge status-{{ inquiry.status }}">
+                        {{ inquiry.status }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">優先度</div>
+                <div class="detail-value">
+                    <span class="priority-badge priority-{{ inquiry.priority }}">
+                        {{ inquiry.priority }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">問い合わせ日時</div>
+                <div class="detail-value">
+                    {{ inquiry.created_at.strftime('%Y/%m/%d') }}
+                </div>
+            </div>
+
+            <div class="detail-content">
+
+                <div class="detail-label">
+                    問い合わせ内容
+                </div>
+
+                <div class="content-box">
+                    {{ inquiry.content }}
+                </div>
+
+            </div>
+
+
+            {% if inquiry.response %}
+
+            <div class="detail-content">
+
+                <div class="detail-label">
+                    対応内容
+                </div>
+
+                <div class="content-box">
+                    {{ inquiry.response }}
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- 管理者操作 -->
+        <div class="detail-actions">
+
+            <a href="/admin/inquiry"
+               class="back-button">
+                一覧に戻る
+            </a>
+
+            <a href="/admin/inquiry/{{ inquiry.id }}/edit"
+               class="edit-button">
+                編集
+            </a>
+
+            <form
+                action="/admin/inquiry/{{ inquiry.id }}/delete"
+                method="post"
+                style="display: inline;"
+                onsubmit="return confirm('この問い合わせを削除しますか？');">
+
+                <button type="submit"
+                        class="delete-button">
+                    削除
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

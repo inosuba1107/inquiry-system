@@ -3,15 +3,17 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from starlette.middleware.sessions import SessionMiddleware
-from datetime import datetime
+from datetime import datetime, timedelta
 from fastapi.responses import RedirectResponse
 from sqlalchemy import func
+
 
 from .database import engine, Base, SessionLocal
 from . import models
 from .auth import hash_password, verify_password
 
 import re
+import calendar
 
 Base.metadata.create_all(bind=engine)
 
@@ -138,6 +140,43 @@ def home_page(request: Request, db: Session = Depends(get_db)):
 
     count_all = pending_count + in_progress_count + completed_count
 
+    #今月の日別件数
+    today = datetime.now()
+    month_start = datetime(today.year, today.month, 1)
+    days_in_month = calendar.monthrange(today.year, today.month)[1]
+
+    daily_counts = []
+    daily_dates = []
+
+    for i in range(days_in_month):
+        day_start = month_start + timedelta(days=i)
+        day_end = day_start + timedelta(days=1)
+
+        inquiries = db.query(models.Inquiry).filter(
+            models.Inquiry.created_at >= day_start, 
+            models.Inquiry.created_at < day_end
+        ).all()
+
+        display_datetime = day_start.strftime("%m/%d")
+
+        daily_dates.append(display_datetime)
+        daily_counts.append(len(inquiries))
+        
+    # カテゴリ別件数
+    category_counts = {}
+
+    inquiries = db.query(models.Inquiry).all()
+
+    for inquiry in inquiries:
+        category = inquiry.category
+
+        if category not in category_counts:
+            category_counts[category] = 0
+
+        category_counts[category] += 1
+
+    print(category_counts)
+
     # 未読通知件数
     unread_count = db.query(
         models.Notification
@@ -168,7 +207,10 @@ def home_page(request: Request, db: Session = Depends(get_db)):
             "completed_count": completed_count,
             "count_all": count_all,
             "unread_count": unread_count,
-            "notifications": notifications
+            "notifications": notifications,
+            "daily_dates": daily_dates,
+            "daily_counts": daily_counts,
+            "category_counts": category_counts,
         }
     )
 

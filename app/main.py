@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from starlette.middleware.sessions import SessionMiddleware
 from datetime import datetime, timedelta
 from fastapi.responses import RedirectResponse
-from sqlalchemy import func
+from sqlalchemy import func, or_
 
 
 from .database import engine, Base, SessionLocal
@@ -66,7 +66,29 @@ def register(
     name: str = Form(...),
     db: Session = Depends(get_db)
 ):
+
+    existing_user = db.query(models.User).filter(
+        models.User.username == username
+    ).first()
+
+    if existing_user:
+        return templates.TemplateResponse(
+            request=request,
+            name="register.html",
+            context={
+                "error": "このユーザーIDは既に使用されています"
+            }
+        )
+
     hashed_password = hash_password(password)
+    if len(password) > 8:
+        return templates.TemplateResponse(
+            request=request,
+            name="register.html",
+            context={
+                "error": "このユーザーIDは既に使用されています"
+            }
+        )
 
     if username == "admin":
         role = "admin"
@@ -1013,6 +1035,7 @@ def update_staff_category(
 @app.get("/admin/inquiry")
 def admin_inquiry(
     request: Request,
+    search: str = "",
     db:Session = Depends(get_db)
 ):
 
@@ -1029,7 +1052,18 @@ def admin_inquiry(
     #全問い合わせ取得
     inquiries = db.query(
         models.Inquiry
-    ).order_by(
+    )
+
+    if search:
+        inquiries = inquiries.filter(
+            or_(
+                models.Inquiry.status.like(f"%{search}%"),
+                models.Inquiry.category.like(f"%{search}%"),
+                models.Inquiry.title.like(f"%{search}%")
+            )
+        )
+
+    inquiries = inquiries.order_by(
         models.Inquiry.created_at.desc()
     ).all()
 

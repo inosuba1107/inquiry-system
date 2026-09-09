@@ -1402,3 +1402,24 @@ button:hover {
 .profile-change-button:hover {
     opacity: 0.85;
 }
+
+/* 管理者グラフ */
+/* 月別グラフ */
+.chart-area {
+    position: relative;
+    width: 100%;
+    height: 180px;
+}
+
+/* 円グラフ */
+.pie-chart-area {
+    width: 140px;
+    height: 140px;
+    margin: 10px auto;
+    position: relative;
+}
+
+.pie-chart-area canvas {
+    width: 140px !important;
+    height: 140px !important;
+}

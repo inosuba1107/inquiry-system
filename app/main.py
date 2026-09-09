@@ -887,6 +887,7 @@ def inquiry_response(
 @app.get("/admin/home")
 def admin_home(
     request: Request,
+    period: str = "month",
     db: Session = Depends(get_db)
 ):
     #ログインユーザーの情報を取得
@@ -924,12 +925,189 @@ def admin_home(
         models.Inquiry.status == "対応済"
     ).count()
 
-    category_counts = db.query(
+    # 集計期間を決定
+    if period == "month":
+        period_start = datetime(now.year, now.month, 1)
+
+        if now.month == 12:
+            period_end = datetime(now.year + 1, 1, 1)
+        else:
+            period_end = datetime(now.year, now.month + 1, 1)
+
+    elif period == "last_month":
+        if now.month == 1:
+            year = now.year - 1
+            month = 12
+        else:
+            year = now.year
+            month = now.month - 1
+
+        period_start = datetime(year, month, 1)
+
+        if month == 12:
+            period_end = datetime(year + 1, 1, 1)
+        else:
+            period_end = datetime(year, month + 1, 1)
+
+    elif period == "3_months":
+        # 今月を含めて3ヶ月
+        month = now.month - 2
+        year = now.year
+
+        while month <= 0:
+            year -= 1
+            month += 12
+
+        period_start = datetime(year, month, 1)
+
+        if now.month == 12:
+            period_end = datetime(now.year + 1, 1, 1)
+        else:
+            period_end = datetime(now.year, now.month + 1, 1)
+
+    elif period == "year":
+        period_start = datetime(now.year, 1, 1)
+        period_end = datetime(now.year + 1, 1, 1)
+
+    else:
+        period = "month"
+        period_start = datetime(now.year, now.month, 1)
+
+        if now.month == 12:
+            period_end = datetime(now.year + 1, 1, 1)
+        else:
+            period_end = datetime(now.year, now.month + 1, 1)
+
+    # 問い合わせ件数のグラフ用データ
+    monthly_labels = []
+    monthly_counts = []
+
+    # 今月・先月 → 日別
+    if period in ["month", "last_month"]:
+
+        if period == "month":
+            target_year = now.year
+            target_month = now.month
+
+        else:
+            if now.month == 1:
+                target_year = now.year - 1
+                target_month = 12
+            else:
+                target_year = now.year
+                target_month = now.month - 1
+
+        target_start = datetime(target_year, target_month, 1)
+
+        if target_month == 12:
+            target_end = datetime(target_year + 1, 1, 1)
+        else:
+            target_end = datetime(target_year, target_month + 1, 1)
+
+        current_day = target_start
+
+        while current_day < target_end:
+
+            next_day = current_day + timedelta(days=1)
+
+            count = db.query(models.Inquiry).filter(
+                models.Inquiry.created_at >= current_day,
+                models.Inquiry.created_at < next_day
+            ).count()
+
+            monthly_labels.append(
+                current_day.strftime("%m/%d")
+            )
+
+            monthly_counts.append(count)
+
+            current_day = next_day
+
+
+    # 3ヶ月・今年 → 月別
+    else:
+
+        current_year = now.year
+        current_month = now.month
+
+        if period == "3_months":
+            start_month = current_month - 2
+            start_year = current_year
+
+            while start_month <= 0:
+                start_year -= 1
+                start_month += 12
+
+        else:  # year
+            start_year = current_year
+            start_month = 1
+
+        year = start_year
+        month = start_month
+
+        while True:
+
+            month_start_date = datetime(year, month, 1)
+
+            if month == 12:
+                next_month = datetime(year + 1, 1, 1)
+            else:
+                next_month = datetime(year, month + 1, 1)
+
+            count = db.query(models.Inquiry).filter(
+                models.Inquiry.created_at >= month_start_date,
+                models.Inquiry.created_at < next_month
+            ).count()
+
+            monthly_labels.append(
+                f"{month}月"
+            )
+
+            monthly_counts.append(count)
+
+            # 今月まで来たら終了
+            if year == current_year and month == current_month:
+                break
+
+            month += 1
+
+            if month == 13:
+                month = 1
+                year += 1
+
+
+    # カテゴリ別問い合わせ件数
+    category_data = db.query(
         models.Inquiry.category,
         func.count(models.Inquiry.id)
+    ).filter(
+        models.Inquiry.created_at >= period_start,
+        models.Inquiry.created_at < period_end
     ).group_by(
         models.Inquiry.category
     ).all()
+
+    category_counts = {
+        category: count
+        for category, count in category_data
+    }
+
+
+    # ステータス別問い合わせ件数
+    status_data = db.query(
+        models.Inquiry.status,
+        func.count(models.Inquiry.id)
+    ).filter(
+        models.Inquiry.created_at >= period_start,
+        models.Inquiry.created_at < period_end
+    ).group_by(
+        models.Inquiry.status
+    ).all()
+
+    status_counts = {
+        status: count
+        for status, count in status_data
+    }
 
     return templates.TemplateResponse(
         request=request,
@@ -941,7 +1119,10 @@ def admin_home(
             "pending_count": pending_count,
             "response_count": response_count,
             "completed_count": completed_count,
-            "category_counts": category_counts
+            "monthly_labels": monthly_labels,
+            "monthly_counts": monthly_counts,
+            "category_counts": category_counts,
+            "status_counts": status_counts
         }
     )
 
@@ -1036,6 +1217,9 @@ def update_staff_category(
 def admin_inquiry(
     request: Request,
     search: str = "",
+    category: str = "",
+    status: str = "",
+    sort: str = "new",
     db:Session = Depends(get_db)
 ):
 
@@ -1063,9 +1247,27 @@ def admin_inquiry(
             )
         )
 
-    inquiries = inquiries.order_by(
-        models.Inquiry.created_at.desc()
-    ).all()
+    if category:
+        inquiries = inquiries.filter(
+            models.Inquiry.category == category
+        )
+        
+
+    if status:
+        inquiries = inquiries.filter(
+           models.Inquiry.status == status
+        )
+
+    if sort == "new":
+        inquiries = inquiries.order_by(
+            models.Inquiry.created_at.desc()
+        ).all()
+
+    elif sort == "old":
+        inquiries = inquiries.order_by(
+            models.Inquiry.created_at.asc()
+        ).all()
+
 
     return templates.TemplateResponse(
         request=request,
@@ -1073,7 +1275,11 @@ def admin_inquiry(
         context={
             "name": request.session.get("name"),
             "role": request.session.get("role"),
-            "inquiries": inquiries
+            "inquiries": inquiries,
+            "sort": sort,
+            "search": search,
+            "category": category,
+            "status": status
         }
     )
 

@@ -67,6 +67,31 @@
 
             {% endif %}
 
+            <form method="get" action="/admin/inquiry">
+
+                <input type="text" name="search" placeholder="キーワードを入力">
+
+                <select name="category">
+                    <option value="">すべてのカテゴリ</option>
+                    <option value="PC・端末">PC・端末</option>
+                    <option value="ネットワーク">ネットワーク</option>
+                    <option value="アカウント">アカウント</option>
+                    <option value="ソフトウェア">ソフトウェア</option>
+                    <option value="その他">その他</option>
+                </select>
+
+                <select name="status">
+                    <option value="">すべてのステータス</option>
+                    <option value="未対応">未対応</option>
+                    <option value="対応中">対応中</option>
+                    <option value="対応済">対応済</option>
+                </select>
+
+                <button type="submit">検索</button>
+
+            </form>
+            
+
             <table class="table_design02">
                 <thead>
                     <tr>
@@ -75,7 +100,17 @@
                         <th>カテゴリ</th>
                         <th>ステータス</th>
                         <th>優先度</th>
-                        <th>日時</th>
+                        <th>
+                            {% if sort == "new" %}
+                                <a href="/admin/inquiry?search={{ search }}&category={{ category }}&status={{ status }}&sort=old">
+                                    日時 ↓
+                                </a>
+                            {% else %}
+                                <a href="/admin/inquiry?search={{ search }}&category={{ category }}&status={{ status }}&sort=new">
+                                    日時 ↑
+                                </a>
+                            {% endif %}
+                        </th>
                         <th></th>
                     </tr>
                 </thead>

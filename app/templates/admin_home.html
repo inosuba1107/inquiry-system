@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>管理者ホーム - 社内問い合わせ管理システム</title>
 
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css?v=2">
 </head>
 
 <body>
@@ -54,20 +54,24 @@
             <!-- 期間選択 -->
             <div class="period-search">
 
-                <label for="period">
-                    期間
-                </label>
+                <form method="get" action="/admin/home">
 
-                <select id="period">
-                    <option>今月</option>
-                    <option>先月</option>
-                    <option>3ヶ月</option>
-                    <option>今年</option>
-                </select>
+                    <label for="period">
+                        期間
+                    </label>
 
-                <button type="button">
-                    表示
-                </button>
+                    <select id="period" name="period">
+                        <option value="month">今月</option>
+                        <option value="last_month">先月</option>
+                        <option value="3_months">3ヶ月</option>
+                        <option value="year">今年</option>
+                    </select>
+
+                    <button type="submit">
+                        表示
+                    </button>
+
+                </form>
 
             </div>
 
@@ -77,71 +81,31 @@
 
                 <!-- 月別 -->
                 <div class="admin-chart-box">
-
                     <h3>月別問い合わせ件数</h3>
 
-                    <div class="bar-chart">
-
-                        <div class="bar" style="height: 45%;">
-                            <span>5月</span>
-                        </div>
-
-                        <div class="bar" style="height: 65%;">
-                            <span>6月</span>
-                        </div>
-
-                        <div class="bar" style="height: 90%;">
-                            <span>7月</span>
-                        </div>
-
-                        <div class="bar" style="height: 75%;">
-                            <span>8月</span>
-                        </div>
-
+                    <div class="chart-area">
+                        <canvas id="monthlyChart"></canvas>
                     </div>
-
                 </div>
 
 
-                <!-- カテゴリ -->
+               <!-- カテゴリ -->
                 <div class="admin-chart-box">
-
                     <h3>カテゴリ別件数</h3>
 
-                    <div class="admin-pie-area">
-
-                        <div class="admin-pie-chart"></div>
-
-                        <div class="admin-legend">
-                            <p>■ PC・端末</p>
-                            <p>■ ネットワーク</p>
-                            <p>■ アカウント</p>
-                            <p>■ ソフトウェア</p>
-                            <p>■ その他</p>
-                        </div>
-
+                    <div class="pie-chart-area">
+                        <canvas id="categoryChart"></canvas>
                     </div>
-
                 </div>
 
 
                 <!-- ステータス -->
                 <div class="admin-chart-box">
-
                     <h3>ステータス別件数</h3>
 
-                    <div class="status-chart">
-
-                        <div class="status-pie"></div>
-
-                        <div class="admin-legend">
-                            <p>■ 未対応</p>
-                            <p>■ 対応中</p>
-                            <p>■ 対応済</p>
-                        </div>
-
+                    <div class="pie-chart-area">
+                        <canvas id="statusChart"></canvas>
                     </div>
-
                 </div>
 
             </section>
@@ -187,6 +151,91 @@
         </main>
 
     </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    const monthlyLabels = {{ monthly_labels | tojson }};
+    const monthlyCounts = {{ monthly_counts | tojson }};
+
+    new Chart(
+        document.getElementById("monthlyChart"),
+        {
+            type: "bar",
+            data: {
+                labels: monthlyLabels,
+                datasets: [{
+                    label: "問い合わせ件数",
+                    data: monthlyCounts
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        }
+    );
+
+</script>
+<script>
+
+    const categoryData = {{ category_counts | tojson }};
+    const statusData = {{ status_counts | tojson }};
+
+
+    // カテゴリ別問い合わせ件数
+    new Chart(
+        document.getElementById("categoryChart"),
+        {
+            type: "pie",
+            data: {
+                labels: Object.keys(categoryData),
+                datasets: [{
+                    data: Object.values(categoryData)
+                }]
+            },
+            options: {
+                responsive: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        }
+    );
+
+
+    // ステータス別問い合わせ件数
+    new Chart(
+        document.getElementById("statusChart"),
+        {
+            type: "pie",
+            data: {
+                labels: Object.keys(statusData),
+                datasets: [{
+                    data: Object.values(statusData)
+                }]
+            },
+            options: {
+                responsive: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        }
+    );
+
+</script>
 
 </body>
 

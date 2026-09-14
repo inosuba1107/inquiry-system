@@ -81,12 +81,12 @@ def register(
         )
 
     hashed_password = hash_password(password)
-    if len(password) > 8:
+    if len(password) < 4 or len(password) > 8:
         return templates.TemplateResponse(
             request=request,
             name="register.html",
             context={
-                "error": "このユーザーIDは既に使用されています"
+                "error": "パスワードが4～8文字で設定して下さい"
             }
         )
 
@@ -1332,8 +1332,6 @@ def admin_inquiry(
     if search:
         inquiries = inquiries.filter(
             or_(
-                models.Inquiry.status.like(f"%{search}%"),
-                models.Inquiry.category.like(f"%{search}%"),
                 models.Inquiry.title.like(f"%{search}%")
             )
         )
@@ -1352,13 +1350,14 @@ def admin_inquiry(
     if sort == "new":
         inquiries = inquiries.order_by(
             models.Inquiry.created_at.desc()
-        ).all()
+        )
 
     elif sort == "old":
         inquiries = inquiries.order_by(
             models.Inquiry.created_at.asc()
-        ).all()
+        )
 
+    inquiries = inquiries.all()
 
     return templates.TemplateResponse(
         request=request,

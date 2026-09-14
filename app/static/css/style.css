@@ -1423,3 +1423,9 @@ button:hover {
     width: 140px !important;
     height: 140px !important;
 }
+
+.error-message{
+    color: red !important;
+    font-size: 14px;
+    font-weight: bold;
+}

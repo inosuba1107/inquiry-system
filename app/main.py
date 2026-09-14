@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, Form, Request, UploadFile, File
+from fastapi import FastAPI, Depends, Form, Request, UploadFile, File, status
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
@@ -6,7 +6,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from datetime import datetime, timedelta
 from fastapi.responses import RedirectResponse
 from sqlalchemy import func, or_
-
+from fastapi import status
 
 from .database import engine, Base, SessionLocal
 from . import models
@@ -236,6 +236,14 @@ def home_page(request: Request, db: Session = Depends(get_db)):
         }
     )
 
+@app.get("/login")
+def login_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="login.html",
+        context={}
+    )
+
 # ログイン処理
 @app.post("/login")
 def login(
@@ -290,10 +298,11 @@ def login(
 
 @app.post("/logout")
 def logout(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="login.html",
-        context={}
+    request.session.clear()
+
+    return RedirectResponse(
+        url="/login",
+        status_code=status.HTTP_303_SEE_OTHER
     )
 
 @app.get("/inquiry/register")
@@ -442,38 +451,16 @@ def get_history(
             }
         )
 
-    # 管理者
-    if role == "admin":
+    # 自分の履歴
+    inquiries = db.query(
+        models.Inquiry
+    ).filter(
+        models.Inquiry.username == username
+    ).order_by(
+        models.Inquiry.created_at.desc()
+    ).all()
 
-        inquiries = db.query(
-            models.Inquiry
-        ).order_by(
-            models.Inquiry.created_at.desc()
-        ).all()
-
-    # staff
-    elif role == "staff":
-
-        inquiries = db.query(
-            models.Inquiry
-        ).filter(
-            (models.Inquiry.username == username) |
-            (models.Inquiry.category == user.staff_category)
-        ).order_by(
-            models.Inquiry.created_at.desc()
-        ).all()
-
-    # 一般ユーザー
-    else:
-
-        inquiries = db.query(
-            models.Inquiry
-        ).filter(
-            models.Inquiry.username == username
-        ).order_by(
-            models.Inquiry.created_at.desc()
-        ).all()
-
+    # 未読通知件数
     unread_count = db.query(
         models.Notification
     ).filter(
@@ -481,6 +468,7 @@ def get_history(
         models.Notification.is_read == False
     ).count()
 
+    # 通知一覧
     notifications = db.query(
         models.Notification
     ).filter(
@@ -488,8 +476,6 @@ def get_history(
     ).order_by(
         models.Notification.created_at.desc()
     ).limit(5).all()
-
-
 
     return templates.TemplateResponse(
         request=request,
@@ -499,10 +485,74 @@ def get_history(
             "name": user.name,
             "role": role,
             "inquiries": inquiries,
+            "mode": "my",
             "unread_count": unread_count,
             "notifications": notifications
         }
     )
+
+@app.get("/staff/inquiry")
+def staff_inquiry(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    username = request.session.get("username")
+    role = request.session.get("role")
+
+    if not username:
+        return RedirectResponse(
+            url="/",
+            status_code=303
+        )
+
+    user = db.query(models.User).filter(
+        models.User.username == username
+    ).first()
+
+    if user is None or role != "staff":
+        return RedirectResponse(
+            url="/home",
+            status_code=303
+        )
+
+    inquiries = db.query(
+        models.Inquiry
+    ).filter(
+        models.Inquiry.category == user.staff_category
+    ).order_by(
+        models.Inquiry.created_at.desc()
+    ).all()
+
+    # 未読通知件数
+    unread_count = db.query(
+        models.Notification
+    ).filter(
+        models.Notification.username == username,
+        models.Notification.is_read == False
+    ).count()
+
+    # 通知一覧
+    notifications = db.query(
+        models.Notification
+    ).filter(
+        models.Notification.username == username
+    ).order_by(
+        models.Notification.created_at.desc()
+    ).limit(5).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="inquiry_history.html",
+        context={
+            "user_name": username,
+            "name": user.name,
+            "role": role,
+            "inquiries": inquiries,
+            "mode": "assigned",
+            "unread_count": unread_count,
+            "notifications": notifications
+        }
+    )    
 
 @app.get("/profile")
 def get_profile(request: Request, db: Session = Depends(get_db)):

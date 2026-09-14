@@ -384,12 +384,32 @@ def inquiry_register(
 
     db.commit()
 
+
+    # 未読通知件数
+    unread_count = db.query(
+        models.Notification
+    ).filter(
+        models.Notification.username == username,
+        models.Notification.is_read == False
+    ).count()
+
+    # 通知一覧（新しい順に5件）
+    notifications = db.query(
+        models.Notification
+    ).filter(
+        models.Notification.username == username
+    ).order_by(
+        models.Notification.created_at.desc()
+    ).limit(5).all()
+
     return templates.TemplateResponse(
         request=request,
         name="inquiry_register_success.html",
         context={
             "message": "問い合わせを登録しました",
-            "title": inquiry.title
+            "title": inquiry.title,
+            "unread_count": unread_count,
+            "notifications": notifications
         }
     )
 
@@ -468,6 +488,8 @@ def get_history(
     ).order_by(
         models.Notification.created_at.desc()
     ).limit(5).all()
+
+
 
     return templates.TemplateResponse(
         request=request,
@@ -874,13 +896,32 @@ def inquiry_response(
     db.add(notification)
     db.commit()
 
+    # 未読通知件数
+    unread_count = db.query(
+        models.Notification
+    ).filter(
+        models.Notification.username == username,
+        models.Notification.is_read == False
+    ).count()
+
+    # 通知一覧（新しい順に5件）
+    notifications = db.query(
+        models.Notification
+    ).filter(
+        models.Notification.username == username
+    ).order_by(
+        models.Notification.created_at.desc()
+    ).limit(5).all()
+
     return templates.TemplateResponse(
         request=request,
         name="inquiry_detail.html",
         context={
             "name": request.session.get("name"),
             "role": role,
-            "inquiry": inquiry
+            "inquiry": inquiry,
+            "unread_count": unread_count,
+            "notifications": notifications
         }
     )
 

@@ -1,0 +1,131 @@
+/* ========================================
+   問い合わせ履歴画面専用
+======================================== */
+
+.history-page {
+    width: auto;
+    max-width: none;
+    padding: 30px 50px;
+    box-sizing: border-box;
+}
+
+/* 履歴タイトル */
+.history-page h2 {
+    margin: 0 0 30px;
+    text-align: center;
+    font-size: 26px;
+}
+
+
+/* テーブル */
+
+.history-page .table_design02 {
+    width: 100%;
+    max-width: none;
+    min-width: 1000px;
+
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    color: #000000;
+}
+
+
+/* ヘッダー */
+.history-page .table_design02 th {
+    padding: 14px 16px;
+    background-color: #e8f0fa;
+    border-bottom: 2px solid #d0dbe8;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+
+/* データ */
+.history-page .table_design02 td {
+    padding: 14px 16px;
+
+    background-color: #ffffff;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    font-size: 14px;
+}
+
+
+/* マウスを乗せた行 */
+.history-page .table_design02 tbody tr:hover td {
+    background-color: #f5f8fc;
+}
+
+
+/* ID */
+.history-page .table_design02 th:first-child,
+.history-page .table_design02 td:first-child {
+    width: 60px;
+    text-align: center;
+}
+
+
+/* 件名 */
+.history-page .table_design02 th:nth-child(2) {
+    width: 30%;
+}
+
+
+/* 日時 */
+.history-page .table_design02 td:last-child {
+    white-space: nowrap;
+    color: #666;
+}
+
+
+/* データがない場合 */
+.history-page .table_design02 td[colspan="6"] {
+    padding: 40px;
+    text-align: center;
+    color: #777;
+}
+
+/* 詳細ボタン */
+
+.history-page .detail-button {
+    display: inline-block;
+
+    padding: 6px 14px;
+
+    background-color: #466fbd;
+    color: #ffffff;
+
+    border-radius: 4px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+}
+
+.history-page .detail-button:hover {
+    opacity: 0.8;
+}
+
+
+/* ========================================
+   履歴画面の画面サイズ対応
+======================================== */
+
+@media screen and (max-width: 1000px) {
+
+    .history-page {
+        padding: 30px 25px;
+        overflow-x: auto;
+    }
+
+    .history-page .table_design02 {
+        min-width: 750px;
+    }
+}

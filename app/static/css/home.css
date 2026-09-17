@@ -1,0 +1,134 @@
+/* =========================
+   管理者件数カード
+========================= */
+
+.admin-summary-cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.admin-summary-card {
+    width: 145px;
+    height: 105px;
+
+    background-color: white;
+    padding: 15px;
+
+    box-sizing: border-box;
+}
+
+.admin-summary-card p {
+    color: #333;
+    text-align: left;
+
+    margin: 0 0 5px;
+    font-size: 15px;
+}
+
+.admin-number {
+    color: #111;
+    font-size: 40px;
+}
+
+.admin-number span {
+    font-size: 13px;
+}
+
+
+/* =========================
+   グラフエリア
+========================= */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 30px;
+    margin: 0 35px;
+}
+
+.chart-box {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-height: 250px;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.chart-box h3 {
+    margin: 0 0 15px;
+    color: #333;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+
+/* =========================
+   グラフ
+========================= */
+
+.dummy-chart {
+    height: 180px;
+    position: relative;
+    border-bottom: 1px solid #aaa;
+}
+
+.chart-line {
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    top: 70px;
+    height: 3px;
+    background-color: #416fbd;
+    transform: rotate(-8deg);
+}
+
+.chart-labels {
+    position: absolute;
+    bottom: -25px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #333;
+}
+
+
+/* =========================
+   円グラフ
+========================= */
+
+.pie-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
+.pie-chart {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+
+    background: conic-gradient(
+        #416fbd 0% 55%,
+        #ed7d31 55% 78%,
+        #a5a5a5 78% 88%,
+        #ffc000 88% 95%,
+        #5b9bd5 95% 100%
+    );
+}
+
+.legend {
+    font-size: 13px;
+    color: #555;
+}
+
+.legend p {
+    text-align: left;
+    margin: 8px 0;
+}

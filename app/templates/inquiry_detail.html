@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <title>問い合わせ詳細</title>
 
-    <link rel="stylesheet" href="/static/css/style.css?v=1">
+    <link rel="stylesheet" href="/static/css/common.css?v=1">
+    <link rel="stylesheet" href="/static/css/detail.css?v=1">
+    <link rel="stylesheet" href="/static/css/notification.css?v=1">
 </head>
 
 <body>
@@ -200,7 +202,6 @@
 
                         </div>
 
-
                         <div class="response-form-content">
 
                             <label for="response">
@@ -212,10 +213,9 @@
                                 name="response"
                                 rows="6"
                                 placeholder="問い合わせに対する回答を入力してください"
-                            >{{ inquiry.response or "" }}</textarea>
+                            >{% if role == "admin" %}{{ inquiry.response or "" }}{% endif %}</textarea>
 
                         </div>
-
 
                         <div class="response-actions">
 
@@ -231,8 +231,8 @@
 
                 {% endif %}
 
-                <!-- 担当者からの回答 -->
-                {% if inquiry.response %}
+
+                {% if inquiry.response and role != "staff" %}
 
                 <div class="detail-content response-display">
 

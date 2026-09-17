@@ -1,0 +1,931 @@
+/* =========================
+   管理者ホーム
+========================= */
+
+.admin-main-content {
+    flex: 1;
+    min-width: 0;
+
+    background-color: #d3d0d0;
+    padding: 32px 40px 45px;
+
+    box-sizing: border-box;
+}
+
+.admin-title {
+    margin: 0 0 24px;
+    text-align: center;
+    color: #26354d;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+
+/* =========================
+   期間選択
+========================= */
+
+.admin-period-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: fit-content;
+    margin-bottom: 22px;
+    padding: 12px 16px;
+
+    background-color: #ffffff;
+    border: 1px solid #e5eaf1;
+    border-radius: 10px;
+
+    box-shadow: 0 3px 10px rgba(38, 53, 77, 0.04);
+}
+
+.admin-period-form label {
+    color: #4c5870;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.admin-period-form select {
+    min-width: 90px;
+    height: 34px;
+
+    padding: 4px 10px;
+
+    border: 1px solid #cbd4e1;
+    border-radius: 6px;
+
+    background-color: #ffffff;
+    color: #26354d;
+
+    font-size: 14px;
+}
+
+.admin-period-form button {
+    height: 34px;
+    padding: 0 16px;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: #466fbd;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.admin-period-form button:hover {
+    background-color: #365da7;
+}
+
+
+/* =========================
+   管理者グラフ
+========================= */
+
+.admin-charts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.admin-chart-box {
+    min-width: 0;
+    height: 300px;
+
+    padding: 20px;
+
+    background-color: #ffffff;
+    border: 1px solid #e5eaf1;
+    border-radius: 12px;
+
+    box-shadow: 0 4px 14px rgba(38, 53, 77, 0.06);
+
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.admin-chart-box h3 {
+    margin: 0 0 14px;
+
+    color: #34435c;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+/* 月別棒グラフ */
+
+.chart-area {
+    position: relative;
+    width: 100%;
+    height: 220px;
+}
+
+
+/* 円グラフ */
+
+.pie-chart-area {
+    position: relative;
+
+    width: 190px;
+    height: 190px;
+
+    margin: 8px auto 0;
+}
+
+.pie-chart-area canvas {
+    width: 190px !important;
+    height: 190px !important;
+}
+
+
+/* =========================
+   管理者件数カード
+========================= */
+
+.admin-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+}
+
+.admin-summary-card {
+    min-height: 112px;
+
+    padding: 18px 22px;
+
+    background-color: #ffffff;
+    border: 1px solid #e5eaf1;
+    border-radius: 12px;
+
+    box-shadow: 0 4px 14px rgba(38, 53, 77, 0.06);
+
+    box-sizing: border-box;
+}
+
+.admin-summary-card p {
+    margin: 0 0 10px;
+
+    color: #59677d;
+    text-align: left;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.admin-number {
+    margin: 0;
+
+    color: #26354d;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.admin-number span {
+    margin-left: 8px;
+
+    color: #718096;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* =========================
+   レスポンシブ対応
+========================= */
+
+@media screen and (max-width: 1100px) {
+
+    .admin-main-content {
+        padding: 28px 25px 40px;
+    }
+
+    .admin-charts {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-chart-box {
+        height: 300px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+
+    .admin-main-content {
+        padding: 22px 15px 30px;
+    }
+
+    .admin-title {
+        font-size: 23px;
+        margin-bottom: 20px;
+    }
+
+    .admin-period-form {
+        width: 100%;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+    }
+
+    .admin-summary-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .admin-summary-card {
+        min-height: auto;
+    }
+
+    .admin-number {
+        font-size: 32px;
+    }
+}
+
+/* ========================================
+   管理者：担当者変更画面
+   ======================================== */
+
+.admin-staff-page {
+    flex: 1;
+    background-color: #d3d0d0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+/* タイトル */
+.admin-staff-page .admin-title {
+    margin: 0 0 30px;
+    text-align: center;
+    font-size: 26px;
+}
+
+
+/* テーブル */
+.admin-staff-page .table_design02 {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    color:#000000;
+}
+
+
+/* ヘッダー */
+.admin-staff-page .table_design02 th {
+    padding: 14px 16px;
+    background-color: #e8f0fa;
+    border-bottom: 2px solid #d0dbe8;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+
+/* セル */
+.admin-staff-page .table_design02 td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #dddddd;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+/* 偶数行 */
+.admin-staff-page .table_design02 tbody tr:nth-child(even) {
+    background-color: #f7f9fc;
+}
+
+
+/* マウスを乗せたとき */
+.admin-staff-page .table_design02 tbody tr:hover {
+    background-color: #eef4ff;
+}
+
+
+/* 担当カテゴリ変更フォーム */
+.admin-staff-page .table_design02 form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+}
+
+
+/* セレクトボックス */
+.admin-staff-page .table_design02 select {
+    min-width: 150px;
+    padding: 8px 10px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    background-color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+/* 変更ボタン */
+.admin-staff-page .table_design02 button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 5px;
+    background-color: #466fbd;
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+/* ボタンにマウスを乗せたとき */
+.admin-staff-page .table_design02 button:hover {
+    opacity: 0.85;
+}
+
+
+/* ========================================
+   画面縮小時
+   ======================================== */
+
+@media (max-width: 900px) {
+
+    .admin-staff-page {
+        overflow-x: auto;
+    }
+
+    .admin-staff-page .table_design02 {
+        min-width: 800px;
+    }
+
+}
+
+
+/* ========================================
+   スマホサイズ
+   ======================================== */
+
+@media (max-width: 600px) {
+
+    .admin-staff-page .table_design02 th,
+    .admin-staff-page .table_design02 td {
+        padding: 10px 8px;
+        font-size: 13px;
+    }
+
+    .admin-staff-page .table_design02 select {
+        min-width: 130px;
+        font-size: 13px;
+    }
+
+    .admin-staff-page .table_design02 button {
+        padding: 7px 10px;
+        font-size: 13px;
+    }
+
+}
+
+/* ========================================
+   問い合わせ履歴画面専用
+======================================== */
+
+/* メインコンテンツ */
+.history-page {
+    flex: 1;
+    background-color: #d3d0d0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 履歴タイトル */
+.history-page h2 {
+    margin: 0 0 30px;
+    text-align: center;
+    font-size: 26px;
+}
+
+
+/* テーブル */
+.history-page .table_design02 {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    color:#000000;
+}
+
+
+/* ヘッダー */
+.history-page .table_design02 th {
+    padding: 14px 16px;
+    background-color: #e8f0fa;
+    border-bottom: 2px solid #d0dbe8;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+
+/* データ */
+.history-page .table_design02 td {
+    padding: 14px 16px;
+
+    background-color: #ffffff;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    font-size: 14px;
+}
+
+
+/* マウスを乗せた行 */
+.history-page .table_design02 tbody tr:hover td {
+    background-color: #f5f8fc;
+}
+
+
+/* ID */
+.history-page .table_design02 th:first-child,
+.history-page .table_design02 td:first-child {
+    width: 60px;
+    text-align: center;
+}
+
+
+/* 件名 */
+.history-page .table_design02 th:nth-child(2) {
+    width: 30%;
+}
+
+
+/* 日時 */
+.history-page .table_design02 td:last-child {
+    white-space: nowrap;
+    color: #666;
+}
+
+
+/* データがない場合 */
+.history-page .table_design02 td[colspan="6"] {
+    padding: 40px;
+    text-align: center;
+    color: #777;
+}
+
+/* 詳細ボタン */
+
+.history-page .detail-button {
+    display: inline-block;
+
+    padding: 6px 14px;
+
+    background-color: #466fbd;
+    color: #ffffff;
+
+    border-radius: 4px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+}
+
+.history-page .detail-button:hover {
+    opacity: 0.8;
+}
+
+
+/* ========================================
+   履歴画面の画面サイズ対応
+======================================== */
+
+@media screen and (max-width: 1000px) {
+
+    .history-page {
+        padding: 30px 25px;
+        overflow-x: auto;
+    }
+
+    .history-page .table_design02 {
+        min-width: 750px;
+    }
+}
+
+/* ========================================
+   問い合わせ詳細画面専用
+======================================== */
+
+.inquiry-detail-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 50px;
+    box-sizing: border-box;
+}
+
+.inquiry-detail-page h2 {
+    margin: 0 0 30px;
+    text-align: center;
+    font-size: 26px;
+}
+
+
+/* 詳細カード */
+
+.inquiry-detail-card {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 8px;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+    overflow: hidden;
+}
+
+
+/* 項目 */
+
+.detail-row {
+    display: flex;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+
+/* ラベル */
+
+.detail-row > .detail-label {
+    width: 180px;
+    flex-shrink: 0;
+
+    padding: 14px 20px;
+
+    background-color: #e8f0fa;
+
+    font-weight: bold;
+    font-size: 14px;
+
+    box-sizing: border-box;
+}
+
+
+/* 値 */
+
+.detail-value {
+    flex: 1;
+    min-width: 0;
+
+    padding: 14px 20px;
+
+    font-size: 14px;
+    word-break: break-word;
+}
+
+
+/* 問い合わせ内容・対応内容 */
+
+.detail-content {
+    border-top: 1px solid #e5e5e5;
+}
+
+.detail-content > .detail-label {
+    width: 100%;
+    padding: 14px 20px;
+
+    background-color: #e8f0fa;
+    box-sizing: border-box;
+}
+
+
+/* 内容の高さは文字量に合わせる */
+
+.content-box {
+    min-height: 0;
+    height: auto;
+
+    padding: 20px;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+
+    font-size: 14px;
+    line-height: 1.8;
+
+    box-sizing: border-box;
+}
+
+
+/* 空欄でも少し高さを確保したい場合 */
+
+.detail-content .content-box:empty {
+    min-height: 60px;
+}
+
+
+/* 操作ボタン */
+
+.detail-actions {
+    max-width: 1100px;
+    margin: 25px auto 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.back-button,
+.edit-button,
+.delete-button {
+    display: inline-block;
+
+    padding: 10px 25px;
+
+    border: none;
+    border-radius: 5px;
+
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.back-button {
+    background-color: #466fbd;
+    color: #ffffff;
+}
+
+.edit-button {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: #ffffff;
+}
+
+.back-button:hover,
+.edit-button:hover,
+.delete-button:hover {
+    opacity: 0.85;
+}
+
+
+/* ========================================
+   画面が狭い場合
+======================================== */
+
+@media screen and (max-width: 700px) {
+
+    .inquiry-detail-page {
+        padding: 25px 15px;
+    }
+
+    .detail-row {
+        display: block;
+    }
+
+    .detail-row > .detail-label {
+        width: 100%;
+        padding: 10px 15px;
+    }
+
+    .detail-value {
+        padding: 12px 15px;
+    }
+
+    .detail-content > .detail-label {
+        padding: 10px 15px;
+    }
+
+    .content-box {
+        padding: 15px;
+    }
+}
+
+/* ========================================
+   管理者：問い合わせ編集画面
+======================================== */
+
+.inquiry-edit-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 50px;
+    box-sizing: border-box;
+}
+
+.inquiry-edit-page h2 {
+    margin: 0 0 30px;
+    text-align: center;
+    font-size: 26px;
+}
+
+
+/* 編集カード */
+
+.inquiry-edit-card {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+    padding: 30px 40px;
+    box-sizing: border-box;
+}
+
+
+/* 各入力項目 */
+
+.edit-item {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 22px;
+}
+
+
+/* ラベル */
+
+.edit-item > label {
+    width: 180px;
+    flex-shrink: 0;
+
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+
+/* テキスト入力・セレクト */
+
+.edit-item input[type="text"],
+.edit-item select {
+    flex: 1;
+    min-width: 0;
+
+    height: 42px;
+    padding: 8px 12px;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+
+    background-color: #ffffff;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+
+/* テキストエリア */
+
+.edit-item textarea {
+    flex: 1;
+    min-width: 0;
+
+    min-height: 180px;
+    padding: 12px;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+
+    font-size: 14px;
+    line-height: 1.7;
+
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+
+/* フォーカス時 */
+
+.edit-item input:focus,
+.edit-item select:focus,
+.edit-item textarea:focus {
+    outline: none;
+    border-color: #466fbd;
+    box-shadow: 0 0 0 2px rgba(70, 111, 189, 0.15);
+}
+
+
+/* ボタンエリア */
+
+.edit-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    margin-top: 30px;
+}
+
+
+/* キャンセル・保存 */
+
+.edit-actions .back-button,
+.edit-save-button {
+    display: inline-block;
+
+    min-width: 110px;
+    padding: 11px 25px;
+
+    border: none;
+    border-radius: 5px;
+
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+
+/* キャンセル */
+
+.edit-actions .back-button {
+    background-color: #777777;
+    color: #ffffff;
+}
+
+
+/* 保存 */
+
+.edit-save-button {
+    background-color: #466fbd;
+    color: #ffffff;
+}
+
+
+/* ホバー */
+
+.edit-actions .back-button:hover,
+.edit-save-button:hover {
+    opacity: 0.85;
+}
+
+
+/* ========================================
+   スマホ対応
+======================================== */
+
+@media screen and (max-width: 700px) {
+
+    .inquiry-edit-page {
+        padding: 25px 15px;
+    }
+
+    .inquiry-edit-card {
+        padding: 25px 20px;
+    }
+
+    .edit-item {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .edit-item > label {
+        display: block;
+        width: auto;
+        margin-bottom: 8px;
+    }
+
+    .edit-item input[type="text"],
+    .edit-item select,
+    .edit-item textarea {
+        width: 100%;
+    }
+
+    .edit-item textarea {
+        min-height: 220px;
+    }
+
+    .edit-actions {
+        flex-wrap: wrap;
+    }
+}

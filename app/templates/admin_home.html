@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <title>管理者ホーム - 社内問い合わせ管理システム</title>
 
-    <link rel="stylesheet" href="/static/css/style.css?v=2">
+    <link rel="stylesheet" href="/static/css/common.css?v=1">
+    <link rel="stylesheet" href="/static/css/admin.css?v=2">
 </head>
 
 <body>
@@ -172,6 +173,14 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
+                    x: {
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 6,
+                            maxRotation: 0,
+                            minRotation: 0
+                        }
+                    },
                     y: {
                         beginAtZero: true,
                         ticks: {

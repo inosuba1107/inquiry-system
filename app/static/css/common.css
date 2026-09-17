@@ -1,0 +1,153 @@
+/* =========================
+   全体
+========================= */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+    background-color: #c2d7f3;
+    color: #ffffff;
+}
+
+h1 {
+    margin: 0;
+    padding: 20px;
+    background-color: #4665a8;
+    color: white;
+    font-size: 24px;
+}
+
+h2 {
+    color: #000000;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+p {
+    text-align: center;
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   ヘッダー
+========================= */
+
+.header {
+    height: 68px;
+    background-color: #466fbd;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.system-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    font-size: 18px;
+}
+
+/* =========================
+   レイアウト
+========================= */
+
+.layout {
+    display: flex;
+    min-height: calc(100vh - 68px);
+}
+
+/* =========================
+   サイドバー
+========================= */
+
+.sidebar {
+    width: 168px;
+    background-color: #252525;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 16px 10px;
+    font-size: 18px;
+}
+
+.sidebar a:hover {
+    background-color: #3a3a3a;
+    text-decoration: none;
+}
+
+/* =========================
+   ログアウト
+========================= */
+
+.logout-form {
+    width: auto;
+    margin: 0;
+    padding: 10px;
+    background: none;
+    box-shadow: none;
+}
+
+.logout-form button {
+    width: 100%;
+    background: none;
+    color: white;
+    text-align: left;
+    font-size: 18px;
+}
+
+.logout-form button:hover {
+    background-color: #3a3a3a;
+}
+
+/* =========================
+   成功・エラー
+========================= */
+
+.success {
+    color: #16a34a;
+}
+
+.error {
+    color: #dc2626;
+}
+
+.error-message {
+    color: red !important;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.main-content {
+    flex: 1;
+    background-color: #dfe6f2;
+    padding: 36px 44px;
+}

@@ -3,14 +3,15 @@
     <head>
         <meta charset="UTF-8">
         <title>ログイン</title>
-        <link rel="stylesheet" href="/static/css/style.css?v=1">
+        <link rel="stylesheet" href="/static/css/common.css?v=1">
+        <link rel="stylesheet" href="/static/css/auth.css?v=1">
     </head>
     <body>
         <h1>問い合わせ管理システム</h1>
 
         <h2>ログイン</h2>
 
-        <form action="/login" method="post">
+        <form action="/login" method="post" class="auth-form">
             <div>
                 <label>メールアドレス</label>
                 <input type="text" name="username" placeholder="shohei.ohtani@toiawase.co.jp" required>

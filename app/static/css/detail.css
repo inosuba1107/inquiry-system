@@ -1,0 +1,344 @@
+/* ========================================
+   問い合わせ詳細画面専用
+======================================== */
+
+.inquiry-detail-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 50px;
+    box-sizing: border-box;
+}
+
+.inquiry-detail-page h2 {
+    margin: 0 0 30px;
+    text-align: center;
+    font-size: 26px;
+}
+
+
+/* 詳細カード */
+
+.inquiry-detail-card {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 8px;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+    overflow: hidden;
+}
+
+
+/* 項目 */
+
+.detail-row {
+    display: flex;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+
+/* ラベル */
+
+.detail-row > .detail-label {
+    width: 180px;
+    flex-shrink: 0;
+
+    padding: 14px 20px;
+
+    background-color: #e8f0fa;
+
+    font-weight: bold;
+    font-size: 14px;
+
+    box-sizing: border-box;
+}
+
+
+/* 値 */
+
+.detail-value {
+    flex: 1;
+    min-width: 0;
+
+    padding: 14px 20px;
+
+    font-size: 14px;
+    word-break: break-word;
+}
+
+
+/* 問い合わせ内容・対応内容 */
+
+.detail-content {
+    border-top: 1px solid #e5e5e5;
+}
+
+.detail-content > .detail-label {
+    width: 100%;
+    padding: 14px 20px;
+
+    background-color: #e8f0fa;
+    box-sizing: border-box;
+}
+
+
+/* 内容の高さは文字量に合わせる */
+
+.content-box {
+    min-height: 0;
+    height: auto;
+
+    padding: 20px;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+
+    font-size: 14px;
+    line-height: 1.8;
+
+    box-sizing: border-box;
+}
+
+
+/* 空欄でも少し高さを確保したい場合 */
+
+.detail-content .content-box:empty {
+    min-height: 60px;
+}
+
+
+/* 操作ボタン */
+
+.detail-actions {
+    max-width: 1100px;
+    margin: 25px auto 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.back-button,
+.edit-button,
+.delete-button {
+    display: inline-block;
+
+    padding: 10px 25px;
+
+    border: none;
+    border-radius: 5px;
+
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.back-button {
+    background-color: #466fbd;
+    color: #ffffff;
+}
+
+.edit-button {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: #ffffff;
+}
+
+.back-button:hover,
+.edit-button:hover,
+.delete-button:hover {
+    opacity: 0.85;
+}
+
+
+/* ========================================
+   画面が狭い場合
+======================================== */
+
+@media screen and (max-width: 700px) {
+
+    .inquiry-detail-page {
+        padding: 25px 15px;
+    }
+
+    .detail-row {
+        display: block;
+    }
+
+    .detail-row > .detail-label {
+        width: 100%;
+        padding: 10px 15px;
+    }
+
+    .detail-value {
+        padding: 12px 15px;
+    }
+
+    .detail-content > .detail-label {
+        padding: 10px 15px;
+    }
+
+    .content-box {
+        padding: 15px;
+    }
+}
+
+/* ========================================
+   担当者からの回答表示
+======================================== */
+
+.response-display {
+    margin-top: 25px;
+}
+
+.response-display .detail-label {
+    background-color: #e8f0fa;
+    padding: 14px 16px;
+
+    font-size: 16px;
+    color: #222222;
+}
+
+.response-display .response-box {
+    min-height: 0;
+    height: auto;
+
+    padding: 20px 30px;
+
+    background-color: #ffffff;
+    color: #222222;
+
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+/* ========================================
+   回答登録フォーム
+======================================== */
+
+.response-section {
+    margin: 30px 20px;
+    padding: 25px;
+
+    background-color: #f7f9fc;
+    border: 1px solid #d7e0eb;
+    border-radius: 8px;
+}
+
+/* 回答タイトル */
+.response-section h3 {
+    margin: 0 0 22px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 2px solid #466fbd;
+
+    color: #263b59;
+    font-size: 20px;
+}
+
+
+/* ステータス */
+.response-form-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.response-form-row label,
+.response-form-content label {
+    color: #333333;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.response-form-row select {
+    min-width: 130px;
+
+    padding: 9px 12px;
+
+    border: 1px solid #c5ceda;
+    border-radius: 5px;
+
+    background-color: #ffffff;
+    color: #333333;
+
+    font-size: 14px;
+}
+
+
+/* 対応内容 */
+.response-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-bottom: 20px;
+}
+
+.response-form-content textarea {
+    width: 100%;
+    min-height: 150px;
+
+    padding: 14px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #c5ceda;
+    border-radius: 6px;
+
+    background-color: #ffffff;
+    color: #333333;
+
+    font-size: 14px;
+    line-height: 1.7;
+
+    resize: vertical;
+}
+
+.response-form-content textarea:focus,
+.response-form-row select:focus {
+    outline: none;
+    border-color: #466fbd;
+    box-shadow: 0 0 0 3px rgba(70, 111, 189, 0.15);
+}
+
+
+/* 登録ボタン */
+.response-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.response-button {
+    padding: 11px 25px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: #466fbd;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.response-button:hover {
+    background-color: #365da5;
+}

@@ -1,0 +1,183 @@
+/* ========================================
+   通知ポップアップ
+======================================== */
+
+.notification-wrapper {
+    position: relative;
+}
+
+
+/* 通知ボタン */
+.notification-wrapper .notification {
+    position: relative;
+
+    width: auto;
+    min-width: 0;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+    border-radius: 0;
+
+    background: none;
+    color: white;
+
+    font-size: 28px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+
+/* 未読件数 */
+.notification-wrapper .notification-count {
+    position: absolute;
+
+    top: -6px;
+    right: -10px;
+
+    width: 18px;
+    height: 18px;
+
+    background-color: red;
+    color: white;
+
+    border-radius: 50%;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    line-height: 18px;
+}
+
+
+/* ポップアップ */
+.notification-popup {
+    position: absolute;
+
+    top: 40px;
+    right: 0;
+
+    width: 360px;
+
+    background-color: white;
+
+    border: 1px solid #d9dfe8;
+    border-radius: 8px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.18);
+
+    overflow: hidden;
+
+    display: none;
+
+    z-index: 9999;
+}
+
+
+/* 表示 */
+.notification-popup.show {
+    display: block;
+}
+
+
+/* ヘッダー */
+.notification-popup-header {
+    padding: 14px 18px;
+
+    background-color: #466fbd;
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+/* 通知一覧 */
+.notification-popup-body {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+
+/* 通知 */
+.notification-popup-item {
+    display: block;
+
+    padding: 14px 16px;
+
+    color: #222;
+    text-decoration: none;
+
+    border-bottom: 1px solid #e8ebef;
+}
+
+
+/* 未読 */
+.notification-popup-item.unread {
+    background-color: #f0f6ff;
+    font-weight: bold;
+}
+
+
+/* hover */
+.notification-popup-item:hover {
+    background-color: #f5f8fc;
+    text-decoration: none;
+}
+
+
+/* メッセージ */
+.notification-popup-message {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 5px;
+}
+
+
+/* 日付 */
+.notification-popup-date {
+    color: #777;
+    font-size: 12px;
+}
+
+
+/* 通知なし */
+.notification-popup-empty {
+    padding: 30px 15px;
+
+    text-align: center;
+
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* すべて見る */
+.notification-popup-footer {
+    padding: 12px;
+
+    text-align: center;
+
+    border-top: 1px solid #e5e5e5;
+
+    background-color: #fafafa;
+}
+
+.notification-popup-footer a {
+    color: #3568b8;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    text-decoration: none;
+}
+
+.notification-popup-footer a:hover {
+    text-decoration: underline;
+}

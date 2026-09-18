@@ -169,21 +169,33 @@
                     </div>
                 </div>
                 
-                {% if role == "admin" or (role == "staff" and staff_category == inquiry.category) %}
+                <!-- 担当者からの回答 -->
+                <div class="detail-content response-display">
+                    <div class="detail-label">
+                        担当者からの回答
+                    </div>
 
+                    <div class="content-box response-box">
+                        {{ inquiry.response or "" }}
+                    </div>
+                </div>
+
+
+                <!-- 回答登録フォーム -->
+                {% if role == "admin" or (role == "staff" and staff_category == inquiry.category) %}
                 <div class="response-section">
 
-                    <h3>回答</h3>
+                    <h3>回答を登録</h3>
 
                     <form action="/inquiry/{{ inquiry.id }}/response" method="post">
 
                         <div class="response-form-row">
-
                             <label for="status">
                                 ステータス
                             </label>
 
                             <select name="status" id="status">
+
                                 <option value="未対応"
                                     {% if inquiry.status == "未対応" %}selected{% endif %}>
                                     未対応
@@ -198,9 +210,10 @@
                                     {% if inquiry.status == "対応済" %}selected{% endif %}>
                                     対応済
                                 </option>
-                            </select>
 
+                            </select>
                         </div>
+
 
                         <div class="response-form-content">
 
@@ -213,13 +226,17 @@
                                 name="response"
                                 rows="6"
                                 placeholder="問い合わせに対する回答を入力してください"
-                            >{% if role == "admin" %}{{ inquiry.response or "" }}{% endif %}</textarea>
+                            >{{ inquiry.response or "" }}</textarea>
 
                         </div>
 
+
                         <div class="response-actions">
 
-                            <button type="submit" class="response-button">
+                            <button
+                                type="submit"
+                                class="response-button"
+                            >
                                 回答を登録
                             </button>
 
@@ -232,21 +249,7 @@
                 {% endif %}
 
 
-                {% if inquiry.response and role != "staff" %}
-
-                <div class="detail-content response-display">
-
-                    <div class="detail-label">
-                        担当者からの回答
-                    </div>
-
-                    <div class="content-box response-box">
-                        {{ inquiry.response }}
-                    </div>
-
-                </div>
-
-                {% endif %}
+                
 
             </div>
 

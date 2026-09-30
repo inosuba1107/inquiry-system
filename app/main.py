@@ -858,7 +858,7 @@ def inquiry_detail(
 def inquiry_response(
     inquiry_id: int,
     request: Request,
-    response: str = Form(...),
+    response: str = Form(""),
     status: str = Form(...),
     db: Session = Depends(get_db)
 ):
@@ -1256,7 +1256,7 @@ def admin_staff(
 def update_staff_category(
     user_id: int,
     request: Request,
-    staff_category: str = Form(...),
+    staff_category: str = Form(""),
     db: Session = Depends(get_db)
 ):
     # ログインユーザーの権限
@@ -1289,12 +1289,19 @@ def update_staff_category(
     # 担当カテゴリを変更
     user.staff_category = staff_category if staff_category else None
 
-    # staff_categoryが設定されたらstaffにする
-    if user.role != "admin":
-        if staff_category:
-            user.role = "staff"
-        else:
+    # 「権限なし」の場合
+    if not staff_category:
+        user.staff_category = None
+
+        if user.role != "admin":
             user.role = "user"
+
+    # 担当カテゴリが設定されている場合
+    else:
+        user.staff_category = staff_category
+
+        if user.role != "admin":
+            user.role = "staff"
 
     db.commit()
 
@@ -1570,12 +1577,20 @@ def notifications_page(
         models.Notification.created_at.desc()
     ).all()
 
+    unread_count = db.query(
+        models.Notification
+    ).filter(
+        models.Notification.username == username,
+        models.Notification.is_read == False
+    ).count()
+
     return templates.TemplateResponse(
         request=request,
         name="notifications.html",
         context={
             "name": request.session.get("name"),
-            "notifications": notifications
+            "unread_count": unread_count,
+            "notifications": notifications,           
         }
     )
 

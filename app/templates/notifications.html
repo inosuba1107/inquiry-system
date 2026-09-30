@@ -15,10 +15,63 @@
     <div class="system-title">
         社内問い合わせ管理システム
     </div>
-
     <div class="header-right">
-        <span>通知</span>
-        <span>{{ name }}</span>
+        <div class="notification-wrapper">
+
+            <button type="button"
+                    class="notification"
+                    id="notification-button">
+                🔔
+
+                {% if unread_count > 0 %}
+                    <span class="notification-count">
+                        {{ unread_count }}
+                    </span>
+                {% endif %}
+            </button>
+
+            <div class="notification-popup" id="notification-popup">
+
+                <div class="notification-popup-header">
+                    <span>通知</span>
+                </div>
+
+                <div class="notification-popup-body">
+
+                    {% for notification in notifications %}
+
+                    <a href="/notifications/{{ notification.id }}"
+                    class="notification-popup-item">
+
+                        <div class="notification-popup-message">
+                            {{ notification.message }}
+                        </div>
+
+                        <div class="notification-popup-date">
+                            {{ notification.created_at.strftime('%Y/%m/%d') }}
+                        </div>
+
+                    </a>
+
+                    {% else %}
+
+                    <div class="notification-popup-empty">
+                        通知はありません。
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="notification-popup-footer">
+                    <a href="/notifications">
+                        すべて見る
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
 </header>
@@ -32,7 +85,6 @@
             <a href="/home">・ホーム</a>
             <a href="/inquiry/register">・問い合わせ登録</a>
             <a href="/inquiry/history">・問い合わせ履歴</a>
-            <a href="/notifications">・通知</a>
             <a href="/profile">・プロフィール</a>
         </nav>
 
@@ -79,6 +131,20 @@
     </main>
 
 </div>
+
+<script>
+    const notificationButton =
+        document.getElementById("notification-button");
+
+    const notificationPopup =
+        document.getElementById("notification-popup");
+
+    notificationButton.addEventListener("click", function () {
+
+        notificationPopup.classList.toggle("show");
+
+    });
+</script>
 
 </body>
 </html>
